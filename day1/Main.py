@@ -1,7 +1,5 @@
 import sys
 
-
-
 def part2():
     lines = sys.stdin.readlines()
     sum = 0
@@ -25,7 +23,6 @@ def part2():
                 break
 
     print(answer)
-
 
 def part1():
     sum = 0
