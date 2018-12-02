@@ -1,0 +1,5 @@
+main = interact $
+
+ReadToInt :: [char] -> Int
+ReadToInt ['+' : number] = read number
+ReadToInt xs = read number
