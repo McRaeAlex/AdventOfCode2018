@@ -25,7 +25,7 @@ def part1():
     # read the file into a list of structs
     #lines = open('/home/alex/Coding/AdventOfCode2018/day3/test1.txt', 'r')
     lines = sys.stdin.readlines()
-    listOfLayout = []
+    claims = []
     for line in lines:
         tmparr1 = line.split(' ')
         id = int(tmparr1[0][1:])
@@ -35,17 +35,20 @@ def part1():
         wh = tmparr1[3].split('x')
         w = int(wh[0]) # get w
         h = int(wh[1][:-1])
-        listOfLayout.append(layout(id, x, y, w, h))
+        claims.append(layout(id, x, y, w, h))
 
-    # compare each struct and find the overlaying data
-    overlay = 0
-    arry = zip([i for i in range(len(listOfLayout))], listOfLayout)
-    for (i, item1) in arry:
-        for item2 in listOfLayout[i:]:
-            if item1.id == item2.id:
-                continue
-            overlay += checkOverLap(item1, item2)
-    print(overlay)
+    # Completely misunderstood the question
+    overlapping = 0
+    fabric = [[0 for i in range(1000)] for i in range(1000)] # create the fabric
+    for claim in claims:
+        for x in range(claim.x, claim.x + claim.width):
+            for y in range(claim.y, claim.y + claim.height):
+                fabric[y][x] += 1
+    for i in range(1000):
+        for j in range(1000):
+            if fabric[i][j] > 1:
+                overlapping += 1
+    print(overlapping)
 
 if __name__ == "__main__":
     part1()
