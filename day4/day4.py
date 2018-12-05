@@ -55,3 +55,16 @@ for key, value in guards[iD].items():
 print('minute slept the most:', minute)
 
 print('part1', minute * iD)
+
+# part 2
+maxSlept = 0
+minute = 0
+iD = 0
+for key, value in guards.items():
+    for key2, val in value.items():
+        if val > maxSlept:
+            iD = key
+            minute = key2
+            maxSlept = val
+
+print(iD,'slept the most on', minute, 'sleeping', maxSlept, 'times', 'Result:', iD * minute)
