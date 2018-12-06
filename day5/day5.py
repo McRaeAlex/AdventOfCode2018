@@ -29,5 +29,5 @@ while(breakHappened):
         tmp += result[i]
     result = tmp
 
-print(result)
+#print(result)
 print(len(result))
