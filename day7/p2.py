@@ -7,9 +7,6 @@ class Node:
         self.value = val
         self.lookedAt = False
 
-    def __cmp__(self, other):
-        return cmp(self.value, other.value)
-
     def __repr__(self):
         return ("%s %s" % (self.value, self.children))
 
