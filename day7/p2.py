@@ -28,7 +28,7 @@ class Node:
 
 
 lines = sys.stdin.readlines()
-#lines = open('/home/alex/Coding/AdventOfCode2018/day7/input.txt', 'r').readlines()
+#lines = open('/home/alex/Coding/AdventOfCode2018/day7/test.txt', 'r').readlines()
 
 # parse the input
 nodes = {}
@@ -50,10 +50,27 @@ for key, node in nodes.items():
         listofRoots.append(key)
         #print(node.value)
 
+count = 0
+workers = []
+times = {}
 pq = sorted(listofRoots)
-while(len(pq) > 0):
-    node = pq.pop(0)
-    print(node, end='')
+
+while(len(pq) > 0 or len(workers) > 0):
+    while(len(pq) > 0 & len(workers) < 6):
+        task = pq.pop(0)
+        workers.append(task)
+        times[task] = ord(task) - 4
+    node = None
+    noneZero = True
+    while(noneZero):
+        count += 1
+        for task in workers:
+            times[task] -= 1
+            if times[task] == 0:
+                noneZero = False
+                node = task
+    workers.remove(node)
+
     for key, value in nodes.items():
         if node in value.parents:
             value.parents.remove(node)
@@ -61,4 +78,4 @@ while(len(pq) > 0):
                 pq.append(key)
     pq.sort()
 
-print('')
+print(count)
