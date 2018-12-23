@@ -25,11 +25,12 @@ fn main() {
         display[(y * width + x) as usize] = '*';
     }
     for (i, charr) in display.iter().enumerate() {
+        print!("{}", charr);
         if i % width as usize == 0 {
             println!("");
         }
-        print!("{}", charr);
     }
+    println!("\nTime: {}", time);
 }
 
 fn read_input() -> Vec<((i64, i64), (i64, i64))> {
