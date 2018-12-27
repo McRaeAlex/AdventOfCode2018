@@ -2,7 +2,6 @@ module Main where
 
 import qualified Data.Sequence as Seq
 import Data.List
-import Data.Digits (digits)
 import Data.Monoid
 
 main :: IO ()
@@ -27,11 +26,20 @@ recipe' y x xs =
         where
             score1 = xs `Seq.index` y
             score2 = xs `Seq.index` x
-            newDigs = digits 10 (score1 + score2)
+            newDigs = digits (score1 + score2)
             newSeq = xs <> Seq.fromList newDigs
             recipe1 = ((y + score1 + 1) `mod` (Seq.length newSeq))
             recipe2 = ((x + score2 + 1) `mod` (Seq.length newSeq))
-        
+
+-- turns out the digits function haskell has does not consider 0 a digit...
+-- so i wrote my own which works because the max sum is 18 which can only have 2 digits
+digits :: Int -> [Int]
+digits n
+    | n == 0 = [0]
+    | n < 10 = [n]
+    | otherwise = [x, y]
+        where (x, y) = divMod n 10
+
 part1 n = take 10 (drop n list)
         where
             list =  3 : 7 : recipe' 0 1 sq
