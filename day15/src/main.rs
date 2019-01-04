@@ -3,6 +3,7 @@ use std::io::{self, prelude::*};
 fn main() {
     let (map, mut entities) = parse_input();
     print_map(&map);
+    print_map_with_entities(&map, &entities);
 }
 
 fn parse_input() -> (Vec<Vec<char>>, Vec<Entity>) {
@@ -49,8 +50,12 @@ fn print_map(map: &Vec<Vec<char>>) {
 fn print_map_with_entities(map: &Vec<Vec<char>>, entities: &Vec<Entity>) {
     for (i, row) in map.iter().enumerate() {
         for (j, tile) in row.iter().enumerate() {
-            match (i, j) {
-                _ => print!("{}", tile),
+            for e in entities {
+                if e.pos == (i, j) {
+                    print!("{}", e.race);
+                } else {
+                    print!("{}", tile);
+                }
             }
         }
         println!("");
@@ -66,4 +71,13 @@ struct Entity {
 enum Race {
     Goblin,
     Elf,
+}
+
+impl std::fmt::Display for Race {
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+        match *self {
+            Race::Goblin => write!(f, "G"),
+            Race::Elf => write!(f, "E"),
+        }
+    }
 }
