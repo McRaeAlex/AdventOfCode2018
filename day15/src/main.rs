@@ -1,9 +1,16 @@
+use std::cmp::Ordering;
 use std::io::{self, prelude::*};
 
 fn main() {
     let (map, mut entities) = parse_input();
     print_map(&map);
     print_map_with_entities(&map, &entities);
+    for _ in 0..1 {
+        entities.sort();
+        for e in &entities {
+            println!("{:?}", e);
+        }
+    }
 }
 
 fn parse_input() -> (Vec<Vec<char>>, Vec<Entity>) {
@@ -50,24 +57,52 @@ fn print_map(map: &Vec<Vec<char>>) {
 fn print_map_with_entities(map: &Vec<Vec<char>>, entities: &Vec<Entity>) {
     for (i, row) in map.iter().enumerate() {
         for (j, tile) in row.iter().enumerate() {
+            let mut t = false;
             for e in entities {
                 if e.pos == (i, j) {
                     print!("{}", e.race);
-                } else {
-                    print!("{}", tile);
+                    t = true;
+                    break;
                 }
+            }
+            if !t {
+                print!("{}", tile);
             }
         }
         println!("");
     }
 }
 
+#[derive(Eq, Debug)]
 struct Entity {
     hp: usize,
     pos: (usize, usize),
     race: Race,
 }
 
+impl Ord for Entity {
+    fn cmp(&self, other: &Entity) -> Ordering {
+        match self.pos.1.cmp(&other.pos.1) {
+            Ordering::Less => Ordering::Less,
+            Ordering::Greater => Ordering::Greater,
+            Ordering::Equal => self.pos.0.cmp(&other.pos.0),
+        }
+    }
+}
+
+impl PartialOrd for Entity {
+    fn partial_cmp(&self, other: &Entity) -> Option<Ordering> {
+        Some(self.cmp(other))
+    }
+}
+
+impl PartialEq for Entity {
+    fn eq(&self, other: &Entity) -> bool {
+        self.pos == other.pos
+    }
+}
+
+#[derive(Eq, PartialEq, Debug)]
 enum Race {
     Goblin,
     Elf,
