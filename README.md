@@ -17,7 +17,7 @@ solution fast in haskell I do it after in haskell. Yesterdays task could
 have easily been done in haskell but I was still more comfortable in python.
 
 ## Day 12:
-![Visualization](./Visualizations/day12.png)
+![Visualization](https://github.com/McRaeAlex/AdventOfCode2018/blob/master/Visualizations/Day12.png)
 
 ## Day 13:
 I want to do a visualization for the first part of this maybe the second after.
