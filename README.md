@@ -19,10 +19,12 @@ have easily been done in haskell but I was still more comfortable in python.
 ## Day 12:
 ![Visualization](https://github.com/McRaeAlex/AdventOfCode2018/blob/master/Visualizations/Day12.png)
 
-In order to solve this problem the first part I just simulated it. For part 2 we can to simulate
-50000000000 generations, this was far to many so using excel I graphed the number of plants per
-generation. I noticed it was linear so I simulated it up to a certain number until it became linear
-and then calculated the rest using the function from excel.
+In order to solve this problem I used a number of tools and techniques. For the
+first part I just simulated it by writing the algorithm. For the second part
+50000000000 generations is to large to simulate so instead using excel I graphed
+the number of plants per generation. I noticed it was linear so I simulated it
+up to a certain generation  until it became linear, then calculated the rest
+using the function from excel.
 
 ## Day 13:
 I want to do a visualization for the first part of this maybe the second after.
