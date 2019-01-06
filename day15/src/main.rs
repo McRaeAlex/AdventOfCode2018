@@ -7,10 +7,24 @@ fn main() {
     print_map_with_entities(&map, &entities);
     for _ in 0..1 {
         entities.sort();
-        for e in &entities {
-            println!("{:?}", e);
+        print_entities(&entities);
+        for entity in &entities {
+            // move the entity if it is not in range of the goblins
+            match get_closest_enemy(entity, &entities) {
+                Some(Val) => unimplemented!(),
+                None => break,
+            }
+            // attack if in range
         }
     }
+}
+
+fn get_closest_enemy(e: &Entity, entities: &Vec<Entity>) -> Option<&Entity> {
+    let closest_entity = None;
+    for entity in entities {
+        if entity != e && entity.pos.1
+    }
+    closest_entity
 }
 
 fn parse_input() -> (Vec<Vec<char>>, Vec<Entity>) {
@@ -43,6 +57,12 @@ fn parse_input() -> (Vec<Vec<char>>, Vec<Entity>) {
         map.push(new_row);
     }
     (map, entities)
+}
+
+fn print_entities(entities: &Vec<Entity>) {
+    for e in entities {
+        println!("{:?}", e);
+    }
 }
 
 fn print_map(map: &Vec<Vec<char>>) {
