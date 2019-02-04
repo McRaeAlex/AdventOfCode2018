@@ -40,3 +40,11 @@ on Reddit which looked almost identical (except theirs worked) to my solution.
 I figured out that using a sequence was necessary to force lazy evaluation and with
 some minor tweaks fixed the errors in my code. I was nice to know I was on the 
 right track but frustrating being that close but not solving it.
+
+
+## Day 16:
+This day was really enjoyable it got me even more interested in compilers and 
+interpreters. I also thought the challenge this day was the perfect level. It was
+difficult enough that I had to think of ways to solve it but not to difficult
+that even if I knew how to do it I didn't want to code it in my free time
+\*cough\* day 15 \*cough\*.
