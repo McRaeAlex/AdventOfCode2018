@@ -32,36 +32,123 @@ Found opcode 11: 2
 
 fn main() {
     let stdin = io::stdin();
-    let mut registers = [0, 0, 0, 0];
+    let mut before: [i64; 4] = [0, 0, 0, 0];
+    let mut instruction: (usize, usize, usize, usize) = (0, 0, 0, 0);
+    let mut after: [i64; 4] = [0, 0, 0, 0];
+    let mut double_newline: bool = false;
+    let mut result: usize = 0;
+    /**
+     * this is a matrix of values if the value is none then we know that its not
+     * that opcode. if it is some then we are not sure.
+     */
+    let mut opcode_matrix: Vec<Vec<bool>> = vec![vec![true; 16]; 16];
 
     for (line_num, line) in stdin.lock().lines().enumerate() {
         //println!("Line num: {}", line_num);
         let line = line.unwrap();
-        if line == "\n" {
-            continue;
-        }
-        let instruction = parse_instruction(line);
-        match instruction.0 {
-            0 => gtrr(&mut registers, &instruction),
-            1 => borr(&mut registers, &instruction),
-            2 => gtir(&mut registers, &instruction),
-            3 => eqri(&mut registers, &instruction),
-            4 => addr(&mut registers, &instruction),
-            5 => seti(&mut registers, &instruction),
-            6 => eqrr(&mut registers, &instruction),
-            7 => gtri(&mut registers, &instruction),
-            8 => banr(&mut registers, &instruction),
-            9 => addi(&mut registers, &instruction),
-            10 => setr(&mut registers, &instruction),
-            11 => mulr(&mut registers, &instruction),
-            12 => bori(&mut registers, &instruction),
-            13 => muli(&mut registers, &instruction),
-            14 => eqir(&mut registers, &instruction),
-            15 => bani(&mut registers, &instruction),
-            _ => panic!("ERROR"),
+        //println!("Line: {}", line);
+        //println!("Line Val: {}", line == "");
+        match (line_num % 4, line == "") {
+            (0, false) => {
+                double_newline = false;
+                // set the before array to the array
+                parse_array(&mut before, line)
+            }
+            (1, false) => {
+                double_newline = false;
+                // set this to the instruction
+                instruction = parse_instruction(line);
+            }
+            (2, false) => {
+                double_newline = false;
+                // set the after array to the value
+                parse_array(&mut after, line);
+                // simulate all the instructions then compare the outputs to the
+                // output array values
+                if simulate_instructions(&mut before, &instruction, &mut after, &mut opcode_matrix)
+                    >= 3
+                {
+                    result += 1;
+                }
+                //println!("{:?}", opcode_matrix);
+            }
+            (_, true) => {
+                if double_newline == true {
+                    println!("Result: {}", result);
+                    break;
+                } else {
+                    double_newline = true;
+                }
+            }
+            (_, _) => {
+                panic!("Math no longer works");
+            }
         }
     }
-    println!("{:?}", registers);
+
+    println!("Starting matrix breakdown");
+    // now we go through the matrix and find all the ones with only one in them get rid of that function
+    // in the others
+    /**
+     * while not all found {
+     *  iterate through matrix and find one with only one.
+     *  save the index of the function it maps too.
+     *  remove that function from all rows.
+     * }
+     */
+    let mut found: usize = 0;
+    while found < 16 {
+        let mut index_to_remove: Option<usize> = None;
+        for i in 0..opcode_matrix.len() {
+            let row = &mut opcode_matrix[i];
+            //println!("{}: {:?}", i, row);
+            let mut count = 0;
+            let mut index = 0;
+            for j in 0..row.len() {
+                let val = row[j];
+                if val == true {
+                    count += 1;
+                    index = j;
+                }
+            }
+            if count == 1 {
+                println!("Found opcode {}: {}", i, index);
+                found += 1;
+                index_to_remove = Some(index);
+                break;
+            }
+        }
+        match index_to_remove {
+            Some(index) => {
+                //println!("Removing {}", index);
+                for i in 0..opcode_matrix.len() {
+                    opcode_matrix[i][index] = false;
+                }
+            }
+            None => {
+                // in the event we cannot find a w row with only one value we must find a column with only one row. we can then say that row definitely has that mapping and we can get rid of the other values from the row allowing the loop to start again.
+                //let mut some_name: Option<usize> = None;
+                for j in 0..opcode_matrix[0].len() {
+                    let mut count = 0;
+                    let mut index = 0;
+                    for i in 0..opcode_matrix.len() {
+                        let val = opcode_matrix[i][j];
+                        if val == true {
+                            count += 1;
+                            index = i;
+                        }
+                    }
+                    if count == 1 {
+                        for i in 0..opcode_matrix[index].len() {
+                            opcode_matrix[index][i] = false;
+                        }
+                        opcode_matrix[index][j] = true;
+                        break;
+                    }
+                }
+            }
+        }
+    }
 }
 
 fn parse_array(array: &mut [i64; 4], line: String) {
