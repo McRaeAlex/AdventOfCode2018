@@ -10,6 +10,24 @@ use std::io::{self, prelude::*};
  * We can then use this table to solve the next part. I think it would be easier
  * to just look at the results and map manually for the second part of the 2nd
  * part. There are not that many functions and once we know we know.
+ * Results:
+Starting matrix breakdown
+Found opcode 14: 13
+Found opcode 6: 15
+Found opcode 7: 11
+Found opcode 0: 12
+Found opcode 3: 14
+Found opcode 2: 10
+Found opcode 8: 4
+Found opcode 10: 8
+Found opcode 15: 5
+Found opcode 5: 9
+Found opcode 4: 0
+Found opcode 9: 1
+Found opcode 13: 3
+Found opcode 12: 7
+Found opcode 1: 6
+Found opcode 11: 2
  */
 
 fn main() {
